@@ -23,5 +23,10 @@ namespace WPFBrowserSample
         {
             InitializeComponent();
         }
+
+        void Click_button1(object sender, RoutedEventArgs e)
+        {
+            MessageBlock.Text = "Hello World!!";
+        }
     }
 }
