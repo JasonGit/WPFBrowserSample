@@ -170,7 +170,7 @@
     <Message Text="####### Deploy ClickOnce $(Configuration)|$(Platform)  ---------#" />
 	<Exec Command="xcopy /E /Y $(ClickOnceAppPublish)\*.* $(ClickOnceDestination)" />
     <Exec Command="xcopy /E /Y $(ClickOnceSrc)\*.xbap $(ClickOnceDestination)" />
-	<Exec Command="xcopy /E /Y $(ClickOnceSrc)\WPFBrowserSample.exe $(ClickOnceDestination)\WPFBrowserSample.exe.deploy" />
+	<Exec Command="copy /Y $(ClickOnceSrc)\*.exe $(ClickOnceDestination)\*.exe.deploy" />
 	<Exec Command="xcopy /E /Y $(ClickOnceSrc)\*.manifest $(ClickOnceDestination)" />
   </Target>
 </Project>
