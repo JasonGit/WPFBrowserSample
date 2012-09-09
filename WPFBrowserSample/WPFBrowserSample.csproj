@@ -49,7 +49,8 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <PlatformTarget>AnyCPU</PlatformTarget>
-    <ClickOnceSrc>bin\Debug\app.publish</ClickOnceSrc>
+    <ClickOnceSrc>bin\Debug</ClickOnceSrc>
+	<ClickOnceAppPublish>bin\Debug\app.publish</ClickOnceAppPublish>
     <ClickOnceDestination>C:\Sites\WPF</ClickOnceDestination>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -159,14 +160,15 @@
   <Target Name="AfterBuild">
   </Target>
   -->
-  <Target Name="Publish">
-  <CallTarget Condition=" '$(Configuration)' == 'Debug' " 
-              Targets="DeployClickOnce" 
-              ContinueOnError="false" />
+  <Target Name="Publish" DependsOnTargets="_CopyFilesToPublishFolder">
+	  <CallTarget Condition=" '$(Configuration)' == 'Debug' " 
+				  Targets="DeployClickOnce" 
+				  ContinueOnError="false" />
   </Target>
   <!-- Deploy Click Once-->
   <Target Name="DeployClickOnce">
     <Message Text="####### Deploy ClickOnce $(Configuration)|$(Platform)  ---------#" />
-    <Exec Command="xcopy /E /Y $(ClickOnceSrc)\*.* $(ClickOnceDestination)" />
+	<Exec Command="xcopy /E /Y $(ClickOnceAppPublish)\*.* $(ClickOnceDestination)" />
+    <Exec Command="xcopy /E /Y $(ClickOnceSrc)\*.xbap $(ClickOnceDestination)" />
   </Target>
 </Project>
