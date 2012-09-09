@@ -33,11 +33,12 @@
     <MapFileExtensions>true</MapFileExtensions>
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>publish.htm</WebPage>
-    <ApplicationRevision>2</ApplicationRevision>
+	<!-- ClickOnce getting build number from Team City -->
+    <ApplicationRevision>$(BUILD_NUMBER)</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
-    <BootstrapperEnabled>false</BootstrapperEnabled>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -47,6 +48,9 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ClickOnceSrc>bin\Debug\app.publish</ClickOnceSrc>
+    <ClickOnceDestination>C:\Sites\WPF</ClickOnceDestination>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -107,6 +111,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="app.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -154,4 +159,14 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <Target Name="Publish">
+  <CallTarget Condition=" '$(Configuration)' == 'Debug' " 
+              Targets="DeployClickOnce" 
+              ContinueOnError="false" />
+  </Target>
+  <!-- Deploy Click Once-->
+  <Target Name="DeployClickOnce">
+    <Message Text="####### Deploy ClickOnce $(Configuration)|$(Platform)  ---------#" />
+    <Exec Command="xcopy /E /Y $(ClickOnceSrc)\*.* $(ClickOnceDestination)" />
+  </Target>
 </Project>
