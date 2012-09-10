@@ -160,7 +160,10 @@
   <Target Name="AfterBuild">
   </Target>
   -->
-  <Target Name="Publish" DependsOnTargets="_CopyFilesToPublishFolder">
+  <Target Name="Publish">
+	  <CallTarget Targets="_CopyFilesToPublishFolder" />
+	  <CallTarget Targets="_DeploymentGenerateBootstrapper" />
+	  <CallTarget Targets="_DeploymentSignClickOnceDeployment" />	  
 	  <CallTarget Condition=" '$(Configuration)' == 'Debug' " 
 				  Targets="DeployClickOnce" 
 				  ContinueOnError="false" />
