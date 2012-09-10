@@ -19,7 +19,10 @@
     <HostInBrowser>true</HostInBrowser>
     <TargetZone>Internet</TargetZone>
     <GenerateManifests>true</GenerateManifests>
-    <SignManifests>True</SignManifests>
+    <SignManifests>true</SignManifests>
+    <ManifestKeyFile>WPFBrowserSample_1_TemporaryKey.pfx</ManifestKeyFile>
+    <ManifestCertificateThumbprint>90E3FED59FD9271469841A43750EA7A03BF8445B</ManifestCertificateThumbprint>
+    <SignAssembly>false</SignAssembly>
     <IsWebBootstrapper>true</IsWebBootstrapper>
     <PublishUrl>http://localhost/</PublishUrl>
     <Install>false</Install>
@@ -33,24 +36,24 @@
     <MapFileExtensions>true</MapFileExtensions>
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>publish.htm</WebPage>
-	<!-- ClickOnce getting build number from Team City -->
-    <ApplicationRevision>$(BUILD_NUMBER)</ApplicationRevision>
+    <ApplicationRevision>0</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
-    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <BootstrapperEnabled>false</BootstrapperEnabled>
+    <!-- ClickOnce getting build number from Team City -->
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>bin\Debug</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <ClickOnceSrc>bin\Debug</ClickOnceSrc>
-	<ClickOnceAppPublish>bin\Debug\app.publish</ClickOnceAppPublish>
+    <ClickOnceAppPublish>bin\Debug\app.publish</ClickOnceAppPublish>
     <ClickOnceDestination>C:\Sites\WPF</ClickOnceDestination>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -119,6 +122,7 @@
     </None>
     <None Include="Properties\app.manifest" />
     <AppDesigner Include="Properties\" />
+    <None Include="WPFBrowserSample_1_TemporaryKey.pfx" />
     <None Include="WPFBrowserSample_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
@@ -147,10 +151,7 @@
     <StartArguments />
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestKeyFile>WPFBrowserSample_TemporaryKey.pfx</ManifestKeyFile>
-  </PropertyGroup>
-  <PropertyGroup>
-    <ManifestCertificateThumbprint>BC2E93427DCAFADA7C009D25A932AD6250AE3221</ManifestCertificateThumbprint>
+    <AssemblyOriginatorKeyFile>WPFBrowserSample_TemporaryKey.pfx</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
@@ -160,20 +161,4 @@
   <Target Name="AfterBuild">
   </Target>
   -->
-  <Target Name="Publish">
-	  <CallTarget Targets="_CopyFilesToPublishFolder" />
-	  <CallTarget Targets="_DeploymentGenerateBootstrapper" />
-	  <CallTarget Targets="_DeploymentSignClickOnceDeployment" />	  
-	  <CallTarget Condition=" '$(Configuration)' == 'Debug' " 
-				  Targets="DeployClickOnce" 
-				  ContinueOnError="false" />
-  </Target>
-  <!-- Deploy Click Once-->
-  <Target Name="DeployClickOnce">
-    <Message Text="####### Deploy ClickOnce $(Configuration)|$(Platform)  ---------#" />
-	<Exec Command="xcopy /E /Y $(ClickOnceAppPublish)\*.* $(ClickOnceDestination)" />
-    <Exec Command="xcopy /E /Y $(ClickOnceSrc)\*.xbap $(ClickOnceDestination)" />
-	<Exec Command="copy /Y $(ClickOnceSrc)\*.exe $(ClickOnceDestination)\*.exe.deploy" />
-	<Exec Command="xcopy /E /Y $(ClickOnceSrc)\*.manifest $(ClickOnceDestination)" />
-  </Target>
 </Project>
